@@ -5,9 +5,14 @@
 """
 
 from pathlib import Path
+import os
+
 
 # مسیر ریشه پروژه (همون پوشه اصلی)
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # کلید مخفی جنگو (از محیط خوانده میشه)
 SECRET_KEY = 'django-insecure-temp-key-change-in-production'
