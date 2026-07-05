@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}میس‌کال موبایل - فروشگاه تخصصی موبایل{% endblock %}
+
+{% block content %}
+
+<!-- ===== بنر بالایی ===== -->
+<div class="bg-gradient-to-l from-[#00b894] to-[#00cec9] rounded-2xl p-6 text-white mb-6 shadow-lg">
+    <p class="text-sm opacity-90">🔥 تخفیف ویژه</p>
+    <h2 class="text-2xl font-bold">تا ۵۰٪ تخفیف</h2>
+    <p class="text-sm opacity-80">فقط تا پایان هفته</p>
+    <a href="/products/" class="inline-block mt-3 bg-white text-[#00b894] px-6 py-2 rounded-full text-sm font-bold">
+        مشاهده محصولات
+    </a>
+</div>
+
+<!-- ===== دسته‌بندی‌ها (اسکرول افقی) ===== -->
+<div class="mb-6">
+    <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm font-bold text-gray-800">📂 دسته‌بندی‌ها</h3>
+        <a href="/products/" class="text-xs text-[#00b894] font-medium">مشاهده همه</a>
+    </div>
+    <div class="category-scroll">
+        {% for category in categories %}
+            <a href="{% url 'products:category_products' category.slug %}" class="category-item">
+                {{ category.name }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ===== محصولات ویژه ===== -->
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-3">
+        <h3 class="text-sm font-bold text-gray-800">⭐ محصولات ویژه</h3>
+        <a href="/products/" class="text-xs text-[#00b894] font-medium">مشاهده همه</a>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+        {% for product in featured_products %}
+            <div class="product-card">
+                <a href="{% url 'products:product_detail' product.slug %}">
+                    <div class="relative">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full aspect-square object-cover">
+                        {% else %}
+                            <div class="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-300">
+                                <i class="fas fa-image text-3xl"></i>
+                            </div>
+                        {% endif %}
+                        <span class="absolute top-2 left-2 bg-[#ff4757] text-white text-[0.5rem] px-2 py-0.5 rounded-full font-bold">
+                            ویژه
+                        </span>
+                    </div>
+                    <div class="p-2.5">
+                        <h4 class="text-xs font-bold text-gray-800 truncate">{{ product.name }}</h4>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span class="text-sm font-bold text-[#00b894]">{{ product.final_price|floatformat:0 }}</span>
+                            <span class="text-[0.5rem] text-gray-400">تومان</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <div class="col-span-2 text-center py-8 text-gray-400 text-sm">
+                محصول ویژه‌ای یافت نشد
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ===== جدیدترین محصولات ===== -->
+<div>
+    <div class="flex items-center justify-between mb-3">
+        <h3 class="text-sm font-bold text-gray-800">🆕 جدیدترین محصولات</h3>
+        <a href="/products/" class="text-xs text-[#00b894] font-medium">مشاهده همه</a>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+        {% for product in latest_products %}
+            <div class="product-card">
+                <a href="{% url 'products:product_detail' product.slug %}">
+                    <div class="relative">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full aspect-square object-cover">
+                        {% else %}
+                            <div class="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-300">
+                                <i class="fas fa-image text-3xl"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="p-2.5">
+                        <h4 class="text-xs font-bold text-gray-800 truncate">{{ product.name }}</h4>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span class="text-sm font-bold text-[#00b894]">{{ product.final_price|floatformat:0 }}</span>
+                            <span class="text-[0.5rem] text-gray-400">تومان</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <div class="col-span-2 text-center py-8 text-gray-400 text-sm">
+                محصولی یافت نشد
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

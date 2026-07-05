@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}میس‌کال موبایل{% endblock %}</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- فونت وزیرمتن -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            direction: rtl;
+            background: #f8f9fa;
+            padding-bottom: 75px; /* جا برای نوار پایین موبایل */
+        }
+        
+        /* ===== استایل‌های حرفه‌ای فروشگاهی ===== */
+        
+        /* 1. هدر چسبنده با شیشه‌ای (Glassmorphism) */
+        .header-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* 2. کارت محصولات با افکت لیفت */
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .product-card:active {
+            transform: scale(0.97);
+        }
+        
+        /* 3. دکمه‌های گرد و مدرن */
+        .btn-modern {
+            background: #00b894;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+        .btn-modern:active {
+            transform: scale(0.95);
+        }
+        .btn-outline-modern {
+            background: transparent;
+            color: #00b894;
+            border: 2px solid #00b894;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+        .btn-outline-modern:active {
+            background: #00b894;
+            color: white;
+        }
+        
+        /* 4. نوار پایین مخصوص موبایل (Bottom Navigation) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 0 env(safe-area-inset-bottom);
+            z-index: 999;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+        }
+        .bottom-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #888;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+            padding: 4px 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            gap: 2px;
+            min-width: 56px;
+        }
+        .bottom-nav a i {
+            font-size: 1.4rem;
+            transition: all 0.2s;
+        }
+        .bottom-nav a.active {
+            color: #00b894;
+            font-weight: 600;
+        }
+        .bottom-nav a.active i {
+            transform: translateY(-2px);
+            text-shadow: 0 4px 12px rgba(0, 184, 148, 0.25);
+        }
+        .bottom-nav a .badge {
+            background: #ff4757;
+            color: white;
+            font-size: 0.6rem;
+            border-radius: 50%;
+            padding: 1px 6px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(10px);
+            min-width: 18px;
+            text-align: center;
+        }
+        .nav-icon-wrap {
+            position: relative;
+            display: inline-flex;
+        }
+        
+        /* 5. استایل سرچ بار */
+        .search-box {
+            background: #f1f2f6;
+            border-radius: 30px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+            color: #2d3436;
+        }
+        .search-box input::placeholder {
+            color: #b2bec3;
+        }
+        
+        /* 6. اسلایدر دسته‌بندی افقی */
+        .category-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 0 12px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .category-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .category-item {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #2d3436;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .category-item.active {
+            background: #00b894;
+            color: white;
+            border-color: #00b894;
+        }
+        
+        /* 7. انیمیشن‌های ملایم */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up {
+            animation: fadeUp 0.5s ease-out forwards;
+        }
+        .fade-up-delay-1 { animation-delay: 0.05s; }
+        .fade-up-delay-2 { animation-delay: 0.1s; }
+        .fade-up-delay-3 { animation-delay: 0.15s; }
+        .fade-up-delay-4 { animation-delay: 0.2s; }
+        
+        /* 8. دکمه شناور Float Action Button */
+        .fab {
+            position: fixed;
+            bottom: 95px;
+            left: 20px;
+            background: #00b894;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(0, 184, 148, 0.35);
+            z-index: 998;
+            font-size: 1.5rem;
+            transition: all 0.2s;
+            border: none;
+        }
+        .fab:active {
+            transform: scale(0.9);
+        }
+        
+        @media (min-width: 768px) {
+            body { padding-bottom: 0; }
+            .bottom-nav { display: none; }
+            .fab { display: none; }
+        }
+    </style>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- ===== HEADER شیشه‌ای ===== -->
+    <header class="header-glass sticky top-0 z-50 px-4 py-2">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <!-- لوگو -->
+            <a href="/" class="text-2xl font-extrabold text-[#00b894] flex items-center gap-1.5 flex-shrink-0">
+                <span class="text-3xl">📱</span>
+                <span class="hidden sm:inline">میس‌کال</span>
+            </a>
+            
+            <!-- سرچ بار (موبایل: فشرده) -->
+            <div class="search-box flex-1 max-w-md">
+                <i class="fas fa-search text-[#b2bec3] text-sm"></i>
+                <input type="text" placeholder="جستجو در میس‌کال..." class="text-sm">
+            </div>
+            
+            <!-- آیکون‌های سمت چپ -->
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <a href="#" class="w-10 h-10 rounded-full bg-[#f1f2f6] flex items-center justify-center text-[#2d3436] hover:bg-[#dfe6e9] transition">
+                    <i class="far fa-heart text-sm"></i>
+                </a>
+                <a href="/cart/" class="w-10 h-10 rounded-full bg-[#00b894] text-white flex items-center justify-center relative">
+                    <i class="fas fa-shopping-bag text-sm"></i>
+                    <span class="absolute -top-1 -right-1 bg-[#ff4757] text-white text-[0.5rem] rounded-full w-5 h-5 flex items-center justify-center font-bold">3</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== محتوای اصلی ===== -->
+    <main class="max-w-7xl mx-auto px-3 py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- نوار پایین مخصوص موبایل (Bottom Navigation) -->
+    <nav class="bottom-nav">
+        <a href="{% url 'home:home' %}" class="active">
+            <i class="fas fa-home"></i>
+            <span>خانه</span>
+        </a>
+        <a href="{% url 'products:product_list' %}">
+            <i class="fas fa-th-large"></i>
+            <span>محصولات</span>
+        </a>
+        <a href="/cart/">
+            <div class="nav-icon-wrap">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="badge">3</span>
+            </div>
+            <span>سبد</span>
+        </a>
+        <a href="#">
+            <i class="far fa-heart"></i>
+            <span>علاقه‌ها</span>
+        </a>
+        <a href="/accounts/profile/">
+            <i class="far fa-user"></i>
+            <span>پروفایل</span>
+        </a>
+    </nav>
+    <!-- ===== دکمه شناور ===== -->
+    <button class="fab">
+        <i class="fas fa-phone"></i>
+    </button>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

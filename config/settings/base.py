@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     # کتابخانه‌های شخص ثالث
     'rest_framework',
     'rest_framework_simplejwt',
@@ -36,6 +35,12 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'payments',
+    'home',
+]
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
 ]
 
 # میان‌افزارها (Middleware)
@@ -56,7 +61,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # <-- این خط رو تغییر بده
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
